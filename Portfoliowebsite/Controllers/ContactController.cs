@@ -16,28 +16,26 @@ namespace Portfoliowebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ContactFormPost(ContactFormModel model, CancellationToken ct)
         {
-
             if (!ModelState.IsValid)
                 return View("Index", model);
 
-            //var subject = "Terugbelverzoek via website";
-            //var body =
-            //    $"Naam : {model.Name}\n" +
-            //    $"Telefoon: {model.Phone}\n" +
-            //    $"Verzonden: {DateTimeOffset.Now:dd-MM-yyyy HH:mm:ss zzz}";
+            // get all values and remove whitespace at the start and end of the string
+            var name = model.Name.Trim();
+            var email = model.Mail.Trim();
+            var subject = model.Subject.Trim();
+            var message = model.Message.Trim();
 
-            //try
-            //{
-            //    await _emailSender.SendAsync(Recipient, subject, body, ct);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError(ex, "Fout bij versturen terugbelverzoek");
-            //    ModelState.AddModelError(string.Empty, "Er ging iets mis bij het versturen. Probeer het later opnieuw.");
-            //    return View("Index", model);
-            //}
+            // Send email to the contact inbox using try catch to handle execptions
+            try
+            {
+                await _email.SendAsync(name, email, subject, message);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Er is een fout opgetreden bij het verzenden van de e-mail.");
+                return View("Index", model);
+            }
 
-            //TempData["SuccessMessage"] = "Bedankt! Uw terugbelverzoek is ontvangen door Optistyle.";
             return RedirectToAction(nameof(Thanks));
         }
 

@@ -1,10 +1,11 @@
-﻿@{
+﻿@model ContactFormModel
+@{
     ViewData["Title"] = "Contact";
 }
 
 <h1>Contact</h1>
 
-<form id="contactForm" asp-action="Index" method="post" novalidate>
+@* <form id="contactForm" asp-action="Index" method="post" novalidate>
     @Html.AntiForgeryToken()
     <div class="hp">
         <label for="website">Laat dit veld leeg</label>
@@ -32,4 +33,71 @@
     <div class="send-button" role="button" onclick="document.getElementById('contactForm').submit()">
         Versturen
     </div>
+</form> *@
+
+<form id="callbackForm" asp-action="ContactFormPost" method="post" class="callback-form" novalidate>
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly"
+         class="validation-error"
+         role="alert"
+         aria-live="assertive">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name"
+               class="form-input"
+               inputmode="text"
+               maxlength="50"
+               placeholder="Voornaam Achternaam"
+               aria-describedby="nameHelp" />
+        <span id="nameHelp" class="sr-only">
+        </span>
+        <span asp-validation-for="Name" class="validation-error" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Mail" class="form-label"></label>
+        <input asp-for="Mail"
+               class="form-input"
+               inputmode="email"
+               maxlength="254"
+               placeholder="voorbeeld@mail.nl"
+               aria-describedby="mailHelp" />
+        <span id="mailHelp" class="sr-only">
+        </span>
+        <span asp-validation-for="Mail" class="validation-error" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Subject" class="form-label"></label>
+        <input asp-for="Subject"
+               class="form-input"
+               inputmode="text"
+               maxlength="250"
+               placeholder="Mail onderwerp"
+               aria-describedby="subjectHelp" />
+        <span id="subjectHelp" class="sr-only">
+        </span>
+        <span asp-validation-for="Subject" class="validation-error" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Message" class="form-label"></label>
+        <textarea asp-for="Message"
+               class="form-input"
+               inputmode="text"
+               placeholder="Uw bericht."
+               aria-describedby="messageHelp"></textarea>
+        <span id="messageHelp" class="sr-only">
+        </span>
+        <span asp-validation-for="Message" class="validation-error" />
+    </div>
+
+    <button type="submit" class="submit-button">Verstuur</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

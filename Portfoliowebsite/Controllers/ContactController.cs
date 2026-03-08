@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portfoliowebsite.Models;
 using Portfoliowebsite.Services;
 
 namespace Portfoliowebsite.Controllers
@@ -12,14 +13,31 @@ namespace Portfoliowebsite.Controllers
         public IActionResult Index() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Index(string Name, string Email, string Subject, string Message)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContactFormPost(ContactFormModel model, CancellationToken ct)
         {
-            await _email.SendAsync(Name, Email, Subject, Message);
 
-            TempData["ThanksName"] = Name;
-            TempData["ThanksEmail"] = Email;
-            TempData["ThanksMessage"] = Message;
+            if (!ModelState.IsValid)
+                return View("Index", model);
 
+            //var subject = "Terugbelverzoek via website";
+            //var body =
+            //    $"Naam : {model.Name}\n" +
+            //    $"Telefoon: {model.Phone}\n" +
+            //    $"Verzonden: {DateTimeOffset.Now:dd-MM-yyyy HH:mm:ss zzz}";
+
+            //try
+            //{
+            //    await _emailSender.SendAsync(Recipient, subject, body, ct);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "Fout bij versturen terugbelverzoek");
+            //    ModelState.AddModelError(string.Empty, "Er ging iets mis bij het versturen. Probeer het later opnieuw.");
+            //    return View("Index", model);
+            //}
+
+            //TempData["SuccessMessage"] = "Bedankt! Uw terugbelverzoek is ontvangen door Optistyle.";
             return RedirectToAction(nameof(Thanks));
         }
 

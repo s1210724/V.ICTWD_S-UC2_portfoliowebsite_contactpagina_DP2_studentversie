@@ -25,6 +25,11 @@ namespace Portfoliowebsite.Controllers
             var subject = model.Subject.Trim();
             var message = model.Message.Trim();
 
+            // add tempdata for thankyou form
+            TempData["ThanksName"] = name;
+            TempData["ThanksEmail"] = email;
+            TempData["ThanksMessage"] = message;
+
             // Send email to the contact inbox using try catch to handle execptions
             try
             {

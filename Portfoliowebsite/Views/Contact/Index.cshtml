@@ -5,36 +5,6 @@
 
 <h1>Contact</h1>
 
-@* <form id="contactForm" asp-action="Index" method="post" novalidate>
-    @Html.AntiForgeryToken()
-    <div class="hp">
-        <label for="website">Laat dit veld leeg</label>
-        <input type="text" id="website" name="website" value="" />
-    </div>
-    <div>
-        <input id="Name" name="Name" placeholder="Naam" tabindex="-1" />
-        <div id="nameErr" class="error"></div>
-    </div>
-    <div>
-        <label for="EmailX">E-mail</label>
-        <input id="Email" name="Email" placeholder="naam@domein.nl" />
-        <div id="emailErr" class="error"></div>
-    </div>
-    <div>
-        <label for="Subject">Onderwerp</label>
-        <input id="Subject" name="Subject" placeholder="Onderwerp" />
-    </div>
-    <div>
-        <label for="Message" aria-hidden="true">Bericht</label> 
-        <textarea id="Message" name="Message" rows="5" placeholder="Je bericht"></textarea>
-        <div id="msgErr" class="error"></div>
-    </div>
-    <div id="liveStatus"></div>
-    <div class="send-button" role="button" onclick="document.getElementById('contactForm').submit()">
-        Versturen
-    </div>
-</form> *@
-
 <form id="callbackForm" asp-action="ContactFormPost" method="post" class="callback-form" novalidate>
     @Html.AntiForgeryToken()
 
@@ -50,6 +20,7 @@
                class="form-input"
                inputmode="text"
                maxlength="50"
+               pattern="^[A-Za-zÀ-ÿ'\-\s]{2,50}$"
                placeholder="Voornaam Achternaam"
                aria-describedby="nameHelp" />
         <span id="nameHelp" class="sr-only">
@@ -63,6 +34,7 @@
                class="form-input"
                inputmode="email"
                maxlength="254"
+               pattern="^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                placeholder="voorbeeld@mail.nl"
                aria-describedby="mailHelp" />
         <span id="mailHelp" class="sr-only">
@@ -76,6 +48,7 @@
                class="form-input"
                inputmode="text"
                maxlength="250"
+               pattern=".{2,250}"
                placeholder="Mail onderwerp"
                aria-describedby="subjectHelp" />
         <span id="subjectHelp" class="sr-only">
@@ -89,7 +62,8 @@
                class="form-input"
                inputmode="text"
                placeholder="Uw bericht."
-               aria-describedby="messageHelp"></textarea>
+               aria-describedby="messageHelp"
+               pattern=".{10,5000}"></textarea>
         <span id="messageHelp" class="sr-only">
         </span>
         <span asp-validation-for="Message" class="validation-error" />
